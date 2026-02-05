@@ -2,6 +2,8 @@
 
 I’m a huge fan of Jay’s [Press E to Heal Followers](https://www.nexusmods.com/skyrimspecialedition/mods/101823) mod, but the original mod used Papyrus script for inventory scanning, which can struggle in a large modlist like mine. I have over 2600 mods, and some of them are pretty script-heavy. I’ve remade that function again in SKSE, making the process instant, and it should eliminate the lag.
 
+It's available on Nexus
+
 <p align="center">
   <img src="https://media1.tenor.com/m/hHxgETKAGq0AAAAd/spam-button.gif" />
   <br>
