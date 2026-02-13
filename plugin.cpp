@@ -2,6 +2,36 @@
 #include <SKSE/SKSE.h>
 
 namespace HealFollowersSKSE {
+    static bool IsHealingPotion(RE::AlchemyItem* a_item, RE::BGSKeyword* a_restoreKW) {
+        if (!a_item || !a_restoreKW) {
+            return false;
+        }
+
+        if (a_item->IsFood()) {
+            return false;
+        }
+
+        if (a_item->IsPoison()) {
+            return false;
+        }
+
+        if (a_item->HasKeyword(a_restoreKW)) {
+            return true;
+        }
+
+        for (auto* e : a_item->effects) {
+            if (!e) {
+                continue;
+            }
+            auto* mgef = e->baseEffect;
+            if (mgef && mgef->HasKeyword(a_restoreKW)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     static RE::AlchemyItem* FindBestHealPotionImpl(RE::Actor* a_actor, RE::BGSKeyword* a_restoreKW) {
         if (!a_actor || !a_restoreKW) {
             return nullptr;
@@ -23,19 +53,11 @@ namespace HealFollowersSKSE {
                 continue;
             }
 
-            if (alch->IsFood()) {
+            if (!IsHealingPotion(alch, a_restoreKW)) {
                 continue;
             }
 
-            if (alch->effects.size() != 1) {
-                continue;
-            }
-
-            if (!alch->HasKeyword(a_restoreKW)) {
-                continue;
-            }
-
-            const auto value = alch->GetGoldValue();
+            const auto value = static_cast<std::uint32_t>(alch->GetGoldValue());
             if (!best || value < bestValue) {
                 best = alch;
                 bestValue = value;
@@ -45,17 +67,19 @@ namespace HealFollowersSKSE {
         return best;
     }
 
-    static RE::AlchemyItem* FindBestHealPotion(RE::StaticFunctionTag*, RE::Actor* a_actor, RE::BGSKeyword* a_restoreKW) {
+    static RE::AlchemyItem* FindBestHealPotion(RE::StaticFunctionTag*, RE::Actor* a_actor,
+                                               RE::BGSKeyword* a_restoreKW) {
         return FindBestHealPotionImpl(a_actor, a_restoreKW);
     }
 
-    static bool BindPapyrusFunctions(RE::BSScript::IVirtualMachine* a_vm) { a_vm->RegisterFunction("FindBestHealPotion", "HealFollowers_SKSE", FindBestHealPotion);
+    static bool Bind(RE::BSScript::IVirtualMachine* a_vm) {
+        a_vm->RegisterFunction("FindBestHealPotion", "HealFollowers_SKSE", FindBestHealPotion);
         return true;
     }
 }
 
 SKSEPluginLoad(const SKSE::LoadInterface* a_skse) {
     SKSE::Init(a_skse);
-    SKSE::GetPapyrusInterface()->Register(HealFollowersSKSE::BindPapyrusFunctions);
+    SKSE::GetPapyrusInterface()->Register(HealFollowersSKSE::Bind);
     return true;
 }
