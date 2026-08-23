@@ -16,7 +16,7 @@ It's available on Nexus
 * [Press E to Heal Followers](https://www.nexusmods.com/skyrimspecialedition/mods/101823)
 
 ## Permission
-My patch is released under the **MIT license**, which means you can do whatever you want with my mod; you don't have to ask for my permission. As for Jay's mod, you have to check the [Press E to Heal Followers](https://www.nexusmods.com/skyrimspecialedition/mods/101823) mod page and ask Jay.
+My patch is released under the **GPL-3.0 license**. As for Jay's mod, you have to check the [Press E to Heal Followers](https://www.nexusmods.com/skyrimspecialedition/mods/101823) mod page and ask Jay.
 
 ## Credits
 * [jayserpa](https://www.nexusmods.com/skyrimspecialedition/users/5201727) - My GOAT
