@@ -1,6 +1,3 @@
-#include <RE/Skyrim.h>
-#include <SKSE/SKSE.h>
-
 namespace HealFollowersSKSE {
     static bool IsHealingPotion(RE::AlchemyItem* a_item, RE::BGSKeyword* a_restoreKW) {
         if (!a_item || !a_restoreKW) {
@@ -28,7 +25,6 @@ namespace HealFollowersSKSE {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -37,8 +33,7 @@ namespace HealFollowersSKSE {
             return nullptr;
         }
 
-        const auto invCounts = a_actor->GetInventoryCounts(
-            [](RE::TESBoundObject& a_obj) { return a_obj.GetFormType() == RE::FormType::AlchemyItem; });
+        const auto invCounts = a_actor->GetInventoryCounts([](RE::TESBoundObject& a_obj) { return a_obj.GetFormType() == RE::FormType::AlchemyItem; });
 
         RE::AlchemyItem* best = nullptr;
         std::uint32_t bestValue = 0;
@@ -67,8 +62,7 @@ namespace HealFollowersSKSE {
         return best;
     }
 
-    static RE::AlchemyItem* FindBestHealPotion(RE::StaticFunctionTag*, RE::Actor* a_actor,
-                                               RE::BGSKeyword* a_restoreKW) {
+    static RE::AlchemyItem* FindBestHealPotion(RE::StaticFunctionTag*, RE::Actor* a_actor, RE::BGSKeyword* a_restoreKW) {
         return FindBestHealPotionImpl(a_actor, a_restoreKW);
     }
 
@@ -78,8 +72,8 @@ namespace HealFollowersSKSE {
     }
 }
 
-SKSEPluginLoad(const SKSE::LoadInterface* a_skse) {
-    SKSE::Init(a_skse);
+SKSEPluginLoad(const SKSE::LoadInterface* skse) {
+    SKSE::Init(skse);
     SKSE::GetPapyrusInterface()->Register(HealFollowersSKSE::Bind);
     return true;
 }
